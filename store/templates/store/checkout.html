@@ -1,0 +1,166 @@
+{% extends 'greatkart/base.html' %}
+{% load static %}
+
+
+
+{% block content %}
+
+<section class="section-content padding-y bg">
+<div class="container">
+
+
+
+<!-- ============================ COMPONENT 2 ================================= -->
+<div class="row">
+		<main class="col-md-8">
+
+<article class="card mb-4">
+<div class="card-body">
+	<h4 class="card-title mb-4">Review cart</h4>
+
+	<div class="row">
+		{% for cart_item in cart_items %}
+
+		<div class="col-md-6">
+			<figure class="itemside  mb-4">
+				<div class="aside"><img src="{{ cart_item.product.images.url }}" class="border img-sm"></div>
+				<figcaption class="info">
+					<p>{{ cart_item.product.product_name }} </p>
+					
+					<span class="text-muted">{{ cart_item.quantity }}x${{ cart_item.product.price }} = <var class="price">${{ cart_item.sub_total_price }}</var> </span>
+					
+					<p class="text-muted small">
+					
+					{% if cart_item.variations.all %}
+
+						{% for item in cart_item.variations.all %}
+							{{ item.variation_category | capfirst }} :
+							{{ item.variation_value | capfirst }}
+							<br>
+						{% endfor %}
+
+					{% endif %}
+
+				</p>
+				</figcaption>
+			</figure>
+		</div> <!-- col.// -->
+		
+		{% endfor %}
+
+	</div> <!-- row.// -->
+</div> <!-- card-body.// -->
+</article> <!-- card.// -->
+
+
+<article class="card mb-4">
+<div class="card-body">
+	<h4 class="card-title mb-4">Billing Address</h4>
+	<form action="{% url 'place_order' %}" method="POST">
+		{% csrf_token %}
+
+		<div class="row">
+			<div class="form-group col-sm-6">
+				<label>Frst name</label>
+				<input name="first_name" type="text" placeholder="Type here" class="form-control" required>
+			</div>
+			<div class="form-group col-sm-6">
+				<label>Last name</label>
+				<input name="last_name" type="text" placeholder="Type here" class="form-control">
+			</div>
+			<div class="form-group col-sm-6">
+				<label>Phone</label>
+				<input name="phone" type="text" class="form-control" required>
+			</div>
+			<div class="form-group col-sm-6">
+				<label>Email</label>
+				<input name="email" type="email" placeholder="example@gmail.com" class="form-control" required>
+			</div>
+		</div> <!-- row.// -->	
+			
+		<div class="row">
+			<div class="form-group col-sm-6">
+				<label>Address1*</label>
+				<input name="address_line_1" type="text" placeholder="Type here" class="form-control" required>
+			</div>
+			<div class="form-group col-sm-6">
+				<label>Address2</label>
+				<input name="address_line_2" type="text" placeholder="Type here" class="form-control">
+			</div>
+			
+			<div class="form-group col-sm-6">
+				<label>City/Town*</label>
+				<input name="city" type="text" placeholder="Type here" class="form-control" required>
+			</div>
+			<div class="form-group col-sm-6">
+				<label>State*</label>
+				<input name="state" type="text" placeholder="Type here" class="form-control" required>
+			</div>
+			<div class="form-group col-sm-6">
+				<label>Country*</label>
+				<input name="country" type="text" placeholder="Type here" class="form-control" required>
+			</div>
+			
+			<div class="form-group col-sm-4">
+				<label>Zip</label>
+				<input name="zip_code" type="text" placeholder="PIN code" class="form-control" required>
+			</div>
+			<div class="form-group col-sm-6">
+				<label>Landmark</label>
+				<input name="landmark" type="text" placeholder="Type here" class="form-control">
+			</div>
+			<div class="form-group col-sm-6">
+				<label>Any Other Details</label>
+				<input name="other_detail" type="text" placeholder="Any other detail you want to give" class="form-control">
+			</div>
+		</div> <!-- row.// -->	
+
+	<!-- </div>  card-body.// --> 
+<!-- </article>  card.// --> 
+
+
+</div>
+</article> 
+
+</main>
+
+	<aside class="col-md-4">
+	<div class="card">
+		<div class="card-body">
+			<dl class="dlist-align">
+			  <dt>Total price:</dt>
+			  <dd class="text-right">${{ total_price }}</dd>	
+			</dl>
+			<dl class="dlist-align">
+			  <dt>Tax:</dt>
+			  <dd class="text-right"> ${{ tax }}</dd>
+			</dl>
+			<dl class="dlist-align">
+			  <dt>Total:</dt>
+			  <dd class="text-right text-dark b"><strong>${{ grand_total }}</strong></dd>
+			</dl>
+			<hr>
+			<p class="text-center mb-3">
+				<img src="{% static 'greatkart/images/misc/payments.png' %}" height="26">
+			</p>
+			<button type="submit" name="submit" class="btn btn-primary btn-block"> Place Order </button>
+		
+		</form>
+
+		</div> <!-- card-body.// -->
+	</div> <!-- card.// -->
+	</aside> <!-- col.// -->
+
+</div> <!-- row.// -->
+
+<!-- ============================ COMPONENT 2 END//  ================================= -->
+
+
+
+
+</div> <!-- container .//  -->
+</section>
+
+
+
+{% endblock %}
